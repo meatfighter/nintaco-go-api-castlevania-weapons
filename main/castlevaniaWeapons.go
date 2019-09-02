@@ -7,11 +7,19 @@ import (
 )
 
 const (
-	addressLives     = 0x002A
-	addressShots     = 0x0064
-	addressWhip      = 0x0070
-	addressHearts    = 0x0071
-	addressSubweapon = 0x015B
+	addressLives1     = 0x002A
+	addressLives2     = 0x2097
+	addressLives3     = 0x2098
+	addressHitPoints1 = 0x0044
+	addressHitPoints2 = 0x0045
+	addressHitPoints3 = 0x2067
+	addressShots1     = 0x0064
+	addressShots2     = 0x0141
+	addressWhip       = 0x0070
+	addressHearts1    = 0x0071
+	addressHearts2    = 0x2077
+	addressHearts3    = 0x2078
+	addressSubweapon  = 0x015B
 )
 
 type castlevaniaWeapons struct {
@@ -20,7 +28,9 @@ type castlevaniaWeapons struct {
 }
 
 func newCastlevaniaWeapons() *castlevaniaWeapons {
-	return &castlevaniaWeapons{}
+	return &castlevaniaWeapons{
+		api: nintaco.GetAPI(),
+	}
 }
 
 func (c *castlevaniaWeapons) launch() {
@@ -48,7 +58,33 @@ func (c *castlevaniaWeapons) StatusChanged(message string) {
 	fmt.Printf("Status message: %s\n", message)
 }
 
-func (c *castlevaniaWeapons) switchWeapons() {
+func (c *castlevaniaWeapons) swapWeapons() {
+
+	// get max hit points
+	c.api.WriteCPU(addressHitPoints1, 0x40)
+	c.api.WriteCPU(addressHitPoints2, 0x40)
+	for i := 7; i >= 0; i-- {
+		c.api.WritePPU(addressHitPoints3+i, 0xDA)
+	}
+
+	// get 99 lives
+	c.api.WriteCPU(addressLives1, 99)
+	c.api.WritePPU(addressLives2, 0xD9)
+	c.api.WritePPU(addressLives3, 0xD9)
+
+	// get triple shot
+	c.api.WriteCPU(addressShots1, 2)
+	c.api.WriteCPU(addressShots2, 1)
+
+	// get long chain whip
+	c.api.WriteCPU(addressWhip, 2)
+
+	// get 99 hearts
+	c.api.WriteCPU(addressHearts1, 99)
+	c.api.WritePPU(addressHearts2, 0xD9)
+	c.api.WritePPU(addressHearts3, 0xD9)
+
+	// swap subweapons
 	c.api.WriteCPU(addressSubweapon, c.getNextSubweapon())
 }
 
@@ -73,7 +109,7 @@ func (c *castlevaniaWeapons) FrameRendered() {
 	if c.api.ReadGamepad(0, nintaco.GamepadButtonSelect) {
 		if !c.buttonPressed {
 			c.buttonPressed = true
-			c.switchWeapons()
+			c.swapWeapons()
 		}
 	} else {
 		c.buttonPressed = false
@@ -81,5 +117,6 @@ func (c *castlevaniaWeapons) FrameRendered() {
 }
 
 func main() {
+	nintaco.InitRemoteAPI("localhost", 9999)
 	newCastlevaniaWeapons().launch()
 }
