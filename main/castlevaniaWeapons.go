@@ -101,7 +101,7 @@ func (c *castlevaniaWeapons) getNextSubweapon() int {
 	case 0x0F:
 		return 0x0A // stopwatch -> rosary
 	default:
-		return 0x08 // rosary -> dagger
+		return 0x08 // none/rosary -> dagger
 	}
 }
 
