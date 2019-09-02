@@ -11,5 +11,5 @@
 3. Press Start Server.
 4. From the command-line, launch this Go program.
 5. Begin the game by pressing the Start gamepad button (by default its mapped to the Enter key).
-6. While playing, press the Select gamepad button to swap subweapons (by default its mapped to the apostrophe key).
+6. While playing, swap subweapons at will by pressing Select (by default its mapped to the apostrophe key).
 
