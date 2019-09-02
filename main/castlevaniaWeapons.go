@@ -6,6 +6,9 @@ import (
 	"github.com/meatfighter/nintaco-go-api/nintaco"
 )
 
+// Castlevania RAM maps:
+// http://www.thealmightyguru.com/Games/Hacking/Wiki/index.php?title=Castlevania
+// http://datacrystal.romhacking.net/wiki/Castlevania:RAM_map
 const (
 	addressLives1     = 0x002A
 	addressLives2     = 0x2097
