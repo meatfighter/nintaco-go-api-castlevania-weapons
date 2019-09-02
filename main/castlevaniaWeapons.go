@@ -84,7 +84,7 @@ func (c *castlevaniaWeapons) cycleWeapons() {
 	c.api.WritePPU(addressHearts2, 0xD9)
 	c.api.WritePPU(addressHearts3, 0xD9)
 
-	// swap subweapons
+	// cycle subweapons
 	c.api.WriteCPU(addressSubweapon, c.getNextSubweapon())
 }
 
