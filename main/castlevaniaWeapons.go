@@ -58,7 +58,7 @@ func (c *castlevaniaWeapons) StatusChanged(message string) {
 	fmt.Printf("Status message: %s\n", message)
 }
 
-func (c *castlevaniaWeapons) swapWeapons() {
+func (c *castlevaniaWeapons) cycleWeapons() {
 
 	// get max hit points
 	c.api.WriteCPU(addressHitPoints1, 0x40)
@@ -109,7 +109,7 @@ func (c *castlevaniaWeapons) FrameRendered() {
 	if c.api.ReadGamepad(0, nintaco.GamepadButtonSelect) {
 		if !c.buttonPressed {
 			c.buttonPressed = true
-			c.swapWeapons()
+			c.cycleWeapons()
 		}
 	} else {
 		c.buttonPressed = false
